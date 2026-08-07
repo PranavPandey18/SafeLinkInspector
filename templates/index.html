@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Safelink inspector - URL Security Scanner</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>Safelink inspector</h1>
+        <p>Intelligent URL Security Analyzer</p>
+    </header>
+
+    <main>
+
+        <h2>Check Website Safety</h2>
+
+        <p>
+            Enter a website URL below to analyze its security.
+        </p>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="url"
+                placeholder="https://example.com"
+                required
+            >
+
+            <button type="submit">
+                Scan URL
+            </button>
+
+        </form>
+
+       {% if result %}
+    <div class="result">
+
+        <h3>{{ result.status }}</h3>
+
+        <p>{{ result.message }}</p>
+
+        <div class="score">
+            <strong>Risk Score</strong>
+
+            <div class="score-number">
+                {{ result.score }}/100
+            </div>
+        </div>
+
+        <div class="details">
+
+            <p>
+                <strong>URL:</strong> {{ url }}
+            </p>
+
+            <p>
+                <strong>Valid URL:</strong>
+                {% if result.valid %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>HTTPS:</strong>
+                {% if result.https %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Suspicious Indicators:</strong>
+                {% if result.suspicious %}
+                    Detected
+                {% else %}
+                    None detected
+                {% endif %}
+            </p>
+
+        </div>
+
+    </div>
+{% endif %}
+
+    </main>
+
+</body>
+</html>
