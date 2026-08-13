@@ -1,0 +1,6 @@
+// Built by PRANAV PANDEY
+import { AppShell } from '@/components/app-shell'
+import { DashboardPage } from '@/components/dashboard-page'
+import { createClient } from '@/lib/supabase/server'
+
+export default async function Page() { const supabase = await createClient(); const [{ data: scans }, { data: encrypted }] = await Promise.all([supabase.from('scan_history').select('id, url, verdict, risk_score, created_at').order('created_at', { ascending: false }), supabase.from('encryption_history').select('label, action, size_bytes, created_at').order('created_at', { ascending: false })]); const scanRows = scans ?? []; const encryptionRows = encrypted ?? []; const threats = scanRows.filter((item) => item.verdict === 'malicious' || item.verdict === 'suspicious').length; const recent = [...scanRows.slice(0, 3).map((item) => ({ label: 'URL scanned', detail: item.url, tone: item.verdict === 'safe' ? 'bg-safe' : 'bg-danger' })), ...encryptionRows.slice(0, 2).map((item) => ({ label: `${item.action === 'encrypt' ? 'File encrypted' : 'File decrypted'}`, detail: item.label, tone: 'bg-primary' }))]; return <AppShell><DashboardPage scans={scanRows.length} threats={threats} safe={scanRows.filter((item) => item.verdict === 'safe').length} encrypted={encryptionRows.filter((item) => item.action === 'encrypt').length} averageScore={0} recent={recent} /></AppShell> }
