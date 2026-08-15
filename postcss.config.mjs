@@ -1,4 +1,3 @@
-// Built by PRANAV PANDEY
 /** @type {import('postcss-load-config').Config} */
 const config = {
   plugins: {
