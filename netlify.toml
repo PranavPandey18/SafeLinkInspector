@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Netlify's Next.js runtime is auto-detected for App Router projects.
+# Do not set a publish directory: Next.js server routes must remain dynamic.
